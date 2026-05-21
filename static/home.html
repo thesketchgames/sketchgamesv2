@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,92 +8,147 @@
   <link rel="icon" type="image/x-icon" href="/i/favicon.png">
   <script src="/atlas.register.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background: #111;
-      color: #ccc;
-      font-family: monospace;
-      height: 100vh;
+      background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #2d0052 100%);
+      background-attachment: fixed;
+      margin: 0;
+      padding: 20px;
+      font-family: 'Arial', sans-serif;
+      position: relative;
+      overflow-x: hidden;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    .wrap {
-      width: 420px;
-      padding: 0 1rem;
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(0, 191, 255, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
     }
 
     h1 {
-      font-size: 1.1rem;
-      font-weight: normal;
-      color: #fff;
-      margin-bottom: 1.25rem;
-      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #00bfff;
+      font-size: 24px;
+      text-shadow: 0 0 20px rgba(0, 191, 255, 0.8), 0 0 40px rgba(138, 43, 226, 0.6);
+      margin: 0;
+      margin-bottom: 20px;
     }
 
     h1 span {
-      color: #555;
-      font-size: 0.85rem;
-      margin-left: 0.4rem;
+      color: #00bfff;
+      font-size: 24px;
+      margin-left: 0;
+    }
+
+    div {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
     form {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 0.5rem;
+      width: 100%;
+      max-width: 400px;
     }
 
     input {
-      flex: 1;
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      color: #ddd;
-      font-family: monospace;
-      font-size: 0.875rem;
-      padding: 0.5rem 0.75rem;
+      width: 100%;
+      background: rgba(26, 0, 51, 0.5);
+      border: 2px solid rgba(0, 191, 255, 0.5);
+      color: #00bfff;
+      font-family: 'Arial', sans-serif;
+      font-size: 16px;
+      padding: 12px;
       outline: none;
+      border-radius: 8px;
+      text-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+      transition: all 0.3s ease;
     }
 
-    input:focus { border-color: #444; }
-    input::placeholder { color: #444; }
+    input:focus {
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.8), 0 0 40px rgba(138, 43, 226, 0.6);
+    }
+
+    input::placeholder {
+      color: rgba(0, 191, 255, 0.5);
+    }
 
     button {
-      background: #222;
-      border: 1px solid #2a2a2a;
-      color: #aaa;
-      font-family: monospace;
-      font-size: 0.875rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
+      display: none;
     }
 
-    button:hover { background: #2a2a2a; color: #fff; }
-
     .links {
-      margin-top: 1rem;
+      margin-top: 20px;
       display: flex;
       gap: 1rem;
-      font-size: 0.75rem;
+      font-size: 16px;
     }
 
     .links a {
-      color: #444;
       text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      color: #ffd700;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
     }
 
-    .links a:hover { color: #888; }
+    .links a:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    .wrap {
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    img {
+      height: 200px;
+      margin-bottom: 20px;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+      border: 2px solid rgba(0, 191, 255, 0.5);
+    }
+
+    img:hover {
+      box-shadow: 0 0 40px rgba(0, 191, 255, 0.8), 0 0 60px rgba(138, 43, 226, 0.6);
+      border-color: #ffd700;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Sketch Games<span>by thesketchjpg and xhbshefj </span></h1>
+    <img src="/i/logo.png" alt="sketch games logo">
+    <h1>Sketch Games<span>by thesketchjpg and xhbshefj</span></h1>
     <form id="f">
       <input id="u" type="text" placeholder="search sketch games." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </form>
     <div class="links">
       <a href="https://github.com/thesketchgames/sketchgamesv2/" target="_blank">github</a>
-
     </div>
   </div>
   <script>
