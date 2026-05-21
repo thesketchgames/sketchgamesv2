@@ -129,20 +129,16 @@
       margin-bottom: 20px;
       border-radius: 30px;
       transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
-      border: 2px solid rgba(0, 191, 255, 0.5);
     }
 
     img:hover {
-      box-shadow: 0 0 40px rgba(0, 191, 255, 0.8), 0 0 60px rgba(138, 43, 226, 0.6);
-      border-color: #ffd700;
       transform: scale(1.1);
     }
   </style>
 </head>
 <body>
 
-  <!-- Dynamic Interactive Aura Background Layer -->
+  <!-- Dynamic Interactive Neon Aura Background Layer -->
   <script>
     const canvas = document.createElement('canvas');
     canvas.style.position = 'fixed';
@@ -156,7 +152,7 @@
 
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const mouse = { x: null, y: null, radius: 150 };
+    const mouse = { x: null, y: null, radius: 170 }; // Slightly larger interaction area
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -179,11 +175,12 @@
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.radius = Math.random() * 15 + 8; // Smaller, sharper elements
-        this.vx = (Math.random() - 0.5) * 0.8;
-        this.vy = (Math.random() - 0.5) * 0.8;
-        this.color = Math.random() > 0.5 ? 'rgba(0, 191, 255,' : 'rgba(138, 43, 226,';
-        this.alpha = Math.random() * 0.3 + 0.2; // Higher baseline visibility
+        this.radius = Math.random() * 14 + 7;
+        this.vx = (Math.random() - 0.5) * 0.9;
+        this.vy = (Math.random() - 0.5) * 0.9;
+        // High intensity neon color choices
+        this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255,' : 'rgba(188, 0, 255,';
+        this.alpha = Math.random() * 0.4 + 0.4; // High visibility factor
       }
 
       update() {
@@ -205,31 +202,31 @@
             let dirX = dx / distance;
             let dirY = dy / distance;
             
-            this.x -= dirX * force * 4;
-            this.y -= dirY * force * 4;
+            this.x -= dirX * force * 4.5;
+            this.y -= dirY * force * 4.5;
           }
         }
       }
 
       draw() {
-        // High contrast fill for solid, sharp centers
+        // Core shape fill
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = `${this.color} ${this.alpha})`;
         ctx.fill();
 
-        // Distinct outer glow ring instead of a full blur gradient
+        // Neon outer stroke accent
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius + 4, 0, Math.PI * 2);
-        ctx.strokeStyle = `${this.color} ${this.alpha * 0.4})`;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = `${this.color} ${this.alpha * 0.6})`;
+        ctx.lineWidth = 2.5;
         ctx.stroke();
       }
     }
 
     function init() {
       particles = [];
-      const particleCount = Math.floor((canvas.width * canvas.height) / 12000);
+      const particleCount = Math.floor((canvas.width * canvas.height) / 11000);
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
       }
@@ -237,6 +234,10 @@
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Screen composite mode turns overlapping items into intense neon bright points
+      ctx.globalCompositeOperation = 'screen';
+      
       particles.forEach(p => {
         p.update();
         p.draw();
