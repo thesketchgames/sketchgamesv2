@@ -179,7 +179,6 @@
         this.vx = (Math.random() - 0.5) * 0.9;
         this.vy = (Math.random() - 0.5) * 0.9;
         
-        // Expanded neon color palette (Cyan, Purple, Pink, Lime Green)
         const colors = [
           'rgba(0, 243, 255,',   // Neon Cyan
           'rgba(188, 0, 255,',   // Neon Purple
@@ -204,10 +203,10 @@
           let dy = mouse.y - this.y;
           let distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < mouse.radius) {
+          if (distance < mouse.radius && distance > 0) {
             let force = (mouse.radius - distance) / mouse.radius;
             let dirX = dx / distance;
-            let dirY = dirY = dy / distance;
+            let dirY = dy / distance;
             
             this.x -= dirX * force * 4.5;
             this.y -= dirY * force * 4.5;
