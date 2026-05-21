@@ -9,8 +9,8 @@
   <script src="/atlas.register.js"></script>
   <style>
     body {
-      background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #2d0052 100%);
-      background-attachment: fixed;
+      /* Made background transparent so the living canvas color shows through */
+      background: #0a0015;
       margin: 0;
       padding: 20px;
       font-family: 'Arial', sans-serif;
@@ -154,6 +154,9 @@
     let particles = [];
     const mouse = { x: null, y: null, radius: 170 };
 
+    // Track active background colors based on active nodes
+    let currentBg = { r: 10, g: 0, b: 21 };
+
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -171,6 +174,13 @@
       mouse.y = null;
     });
 
+    const neonPalette = [
+      { base: 'rgba(0, 243, 255,',   r: 0,   g: 243, b: 255 }, // Cyan
+      { base: 'rgba(188, 0, 255,',   r: 188, g: 0,   b: 255 }, // Purple
+      { base: 'rgba(255, 0, 127,',   r: 255, g: 0,   b: 127 }, // Hot Pink
+      { base: 'rgba(57, 255, 20,',   r: 57,  g: 255, b: 20  }  // Lime Green
+    ];
+
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
@@ -179,13 +189,8 @@
         this.vx = (Math.random() - 0.5) * 0.9;
         this.vy = (Math.random() - 0.5) * 0.9;
         
-        const colors = [
-          'rgba(0, 243, 255,',   // Neon Cyan
-          'rgba(188, 0, 255,',   // Neon Purple
-          'rgba(255, 0, 127,',   // Neon Hot Pink
-          'rgba(57, 255, 20,'    // Neon Lime Green
-        ];
-        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.colorData = neonPalette[Math.floor(Math.random() * neonPalette.length)];
+        this.color = this.colorData.base;
         this.alpha = Math.random() * 0.4 + 0.4;
       }
 
@@ -237,7 +242,36 @@
     }
 
     function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // 1. Calculate color balance based on what colors are near the mouse
+      let targetR = 10, targetG = 0, targetB = 21;
+      let influenceCount = 1;
+
+      if (mouse.x !== null && mouse.y !== null) {
+        particles.forEach(p => {
+          let dx = mouse.x - p.x;
+          let dy = mouse.y - p.y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouse.radius * 2) {
+            let weight = (mouse.radius * 2 - dist) / (mouse.radius * 2);
+            targetR += p.colorData.r * weight * 0.12;
+            targetG += p.colorData.g * weight * 0.12;
+            targetB += p.colorData.b * weight * 0.12;
+            influenceCount += weight * 0.12;
+          }
+        });
+      }
+
+      // Smooth background fluid color transitions
+      currentBg.r += ((targetR / influenceCount) - currentBg.r) * 0.05;
+      currentBg.g += ((targetG / influenceCount) - currentBg.g) * 0.05;
+      currentBg.b += ((targetB / influenceCount) - currentBg.b) * 0.05;
+
+      // 2. Clear canvas with the dynamically computed glowing fluid ambient color
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = `rgb(${Math.floor(currentBg.r)}, ${Math.floor(currentBg.g)}, ${Math.floor(currentBg.b)})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 3. Render particles on top using high-vibrancy 'screen' blending
       ctx.globalCompositeOperation = 'screen';
       particles.forEach(p => {
         p.update();
