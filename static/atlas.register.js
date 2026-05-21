@@ -7,4 +7,4 @@
       console.error("[Atlas] SW registration failed:", err);
     });
 })();
-alert("")
+
