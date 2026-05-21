@@ -179,11 +179,11 @@
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.radius = Math.random() * 40 + 20; 
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
+        this.radius = Math.random() * 15 + 8; // Smaller, sharper elements
+        this.vx = (Math.random() - 0.5) * 0.8;
+        this.vy = (Math.random() - 0.5) * 0.8;
         this.color = Math.random() > 0.5 ? 'rgba(0, 191, 255,' : 'rgba(138, 43, 226,';
-        this.alpha = Math.random() * 0.15 + 0.05;
+        this.alpha = Math.random() * 0.3 + 0.2; // Higher baseline visibility
       }
 
       update() {
@@ -205,27 +205,31 @@
             let dirX = dx / distance;
             let dirY = dy / distance;
             
-            this.x -= dirX * force * 3;
-            this.y -= dirY * force * 3;
+            this.x -= dirX * force * 4;
+            this.y -= dirY * force * 4;
           }
         }
       }
 
       draw() {
-        let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
-        gradient.addColorStop(0, `${this.color} ${this.alpha})`);
-        gradient.addColorStop(1, `${this.color} 0)`);
-        
+        // High contrast fill for solid, sharp centers
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
+        ctx.fillStyle = `${this.color} ${this.alpha})`;
         ctx.fill();
+
+        // Distinct outer glow ring instead of a full blur gradient
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius + 4, 0, Math.PI * 2);
+        ctx.strokeStyle = `${this.color} ${this.alpha * 0.4})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
       }
     }
 
     function init() {
       particles = [];
-      const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
+      const particleCount = Math.floor((canvas.width * canvas.height) / 12000);
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
       }
@@ -252,7 +256,7 @@
       <input id="u" type="text" placeholder="search sketch games." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </form>
     <div class="links">
-      <a href="https://github.com/thesketchgames/sketchgamesv2/" target="_blank">github</a>
+      <a href="https://github.com" target="_blank">github</a>
     </div>
   </div>
   <script>
@@ -271,7 +275,7 @@
         if(/\.|^localhost(:\d+)?$/.test(s)){
           try{new URL("https://"+s);return"https://"+s}catch(e){}
         }
-        return"https://duckduckgo.com/?q="+encodeURIComponent(s);
+        return"https://duckduckgo.com"+encodeURIComponent(s);
       }
       document.getElementById("f").onsubmit=function(e){
         e.preventDefault();
