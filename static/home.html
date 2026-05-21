@@ -152,7 +152,7 @@
 
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const mouse = { x: null, y: null, radius: 170 }; // Slightly larger interaction area
+    const mouse = { x: null, y: null, radius: 170 };
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -178,9 +178,16 @@
         this.radius = Math.random() * 14 + 7;
         this.vx = (Math.random() - 0.5) * 0.9;
         this.vy = (Math.random() - 0.5) * 0.9;
-        // High intensity neon color choices
-        this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255,' : 'rgba(188, 0, 255,';
-        this.alpha = Math.random() * 0.4 + 0.4; // High visibility factor
+        
+        // Expanded neon color palette (Cyan, Purple, Pink, Lime Green)
+        const colors = [
+          'rgba(0, 243, 255,',   // Neon Cyan
+          'rgba(188, 0, 255,',   // Neon Purple
+          'rgba(255, 0, 127,',   // Neon Hot Pink
+          'rgba(57, 255, 20,'    // Neon Lime Green
+        ];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.alpha = Math.random() * 0.4 + 0.4;
       }
 
       update() {
@@ -200,7 +207,7 @@
           if (distance < mouse.radius) {
             let force = (mouse.radius - distance) / mouse.radius;
             let dirX = dx / distance;
-            let dirY = dy / distance;
+            let dirY = dirY = dy / distance;
             
             this.x -= dirX * force * 4.5;
             this.y -= dirY * force * 4.5;
@@ -209,13 +216,11 @@
       }
 
       draw() {
-        // Core shape fill
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = `${this.color} ${this.alpha})`;
         ctx.fill();
 
-        // Neon outer stroke accent
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius + 4, 0, Math.PI * 2);
         ctx.strokeStyle = `${this.color} ${this.alpha * 0.6})`;
@@ -234,10 +239,7 @@
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Screen composite mode turns overlapping items into intense neon bright points
       ctx.globalCompositeOperation = 'screen';
-      
       particles.forEach(p => {
         p.update();
         p.draw();
