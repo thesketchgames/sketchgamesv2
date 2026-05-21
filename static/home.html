@@ -127,10 +127,17 @@
       margin-bottom: 20px;
       border-radius: 30px;
       transition: all 0.3s ease;
+      /* Makes the middle of the logo image transparent */
+      background: transparent;
+      /* Sharp neon cyan outline with matching outer bloom effect */
+      border: 3px solid #00f3ff;
+      box-shadow: 0 0 15px #00f3ff, inset 0 0 15px #00f3ff;
     }
 
     img:hover {
       transform: scale(1.1);
+      /* Intensifies the neon glow on hover */
+      box-shadow: 0 0 25px #00f3ff, inset 0 0 25px #00f3ff;
     }
   </style>
 </head>
@@ -152,7 +159,6 @@
     let particles = [];
     const mouse = { x: null, y: null, radius: 170 };
 
-    // Baseline dark background colors
     let currentBg = { r: 10, g: 0, b: 21 };
 
     function resizeCanvas() {
@@ -240,7 +246,6 @@
     }
 
     function animate() {
-      // Base dark backdrop color variables
       let targetR = 10, targetG = 0, targetB = 21;
       let influenceCount = 1;
 
@@ -251,7 +256,6 @@
           let dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < mouse.radius * 2) {
             let weight = (mouse.radius * 2 - dist) / (mouse.radius * 2);
-            // Drastically reduced multipliers (0.015) to make the shift barely noticeable
             targetR += p.colorData.r * weight * 0.015;
             targetG += p.colorData.g * weight * 0.015;
             targetB += p.colorData.b * weight * 0.015;
@@ -260,7 +264,6 @@
         });
       }
 
-      // Eased the easing factor down to 0.01 for exceptionally slow transitions
       currentBg.r += ((targetR / influenceCount) - currentBg.r) * 0.01;
       currentBg.g += ((targetG / influenceCount) - currentBg.g) * 0.01;
       currentBg.b += ((targetB / influenceCount) - currentBg.b) * 0.01;
